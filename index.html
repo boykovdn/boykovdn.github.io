@@ -1,0 +1,107 @@
+<html>
+<head>
+
+    <link rel="stylesheet" href="./css/index.css">
+
+</head>
+<body>
+
+    <canvas id="meinCanvas">Browser does not support canvas</canvas>
+
+</body>
+
+<script>
+    var clock_x = Math.floor(window.innerWidth * 0.5);
+    var clock_y = Math.floor(window.innerHeight * 0.5);
+    var clock_r = 50;
+    var lenHourArrow = 0.4 * clock_r;
+    var widthHourArrow = 3;
+    var lenMinuteArrow = 0.7 * clock_r;
+    var widthMinuteArrow = 2;
+    var lenSecondArrow = 0.75 * clock_r;
+    var widthSecondArrow = 1;
+
+    var canvas;
+    var ctx;
+
+    function init() {
+        canvas = document.getElementById('meinCanvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        clock_x = Math.floor(window.innerWidth * 0.5);
+        clock_y = Math.floor(window.innerHeight * 0.5);
+
+        ctx = canvas.getContext('2d');
+        setInterval(reDraw, 1000);
+
+        window.addEventListener("resize", resizeCanvas);
+
+        reDraw();
+    };
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        clock_x = Math.floor(window.innerWidth * 0.5);
+        clock_y = Math.floor(window.innerHeight * 0.5);
+
+        reDraw();
+    };
+
+    function drawRim() {
+        ctx.beginPath();
+        ctx.arc(clock_x, clock_y, clock_r, 0, Math.PI*2);
+        ctx.stroke();
+    };
+
+    function drawHourArrow(hour, minute) {
+        var angleHourArrow = ((hour + minute/60)/24) * (4 * Math.PI);
+        var draw_to_x = clock_x + lenHourArrow * Math.sin(angleHourArrow);
+        var draw_to_y = clock_y - lenHourArrow * Math.cos(angleHourArrow);
+
+        ctx.beginPath();
+        ctx.moveTo(clock_x, clock_y);
+        ctx.lineTo(draw_to_x, draw_to_y);
+        ctx.lineWidth = widthHourArrow;
+        ctx.stroke()
+    };
+    
+    function drawMinuteArrow(minute) {
+        var angleMinuteArrow = (minute/60) * (2 * Math.PI);
+        var draw_to_x = clock_x + lenMinuteArrow * Math.sin(angleMinuteArrow);
+        var draw_to_y = clock_y - lenMinuteArrow * Math.cos(angleMinuteArrow);
+
+        ctx.beginPath();
+        ctx.moveTo(clock_x, clock_y);
+        ctx.lineTo(draw_to_x, draw_to_y);
+        ctx.lineWidth = widthMinuteArrow;
+        ctx.stroke()
+    };
+
+    function drawSecondArrow(second) {
+        var angleSecondArrow = (second/60) * (2 * Math.PI);
+        var draw_to_x = clock_x + lenSecondArrow * Math.sin(angleSecondArrow);
+        var draw_to_y = clock_y - lenSecondArrow * Math.cos(angleSecondArrow);
+
+        ctx.beginPath();
+        ctx.moveTo(clock_x, clock_y);
+        ctx.lineTo(draw_to_x, draw_to_y);
+        ctx.lineWidth = widthSecondArrow;
+        ctx.stroke()
+    };
+
+    function reDraw() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        drawRim();
+        time = new Date();
+        drawHourArrow(time.getHours(), time.getMinutes());
+        drawMinuteArrow(time.getMinutes());
+        drawSecondArrow(time.getSeconds());
+    };
+
+    init();
+
+</script>
+
+</html>
