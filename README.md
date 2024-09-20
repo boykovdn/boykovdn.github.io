@@ -1,4 +1,4 @@
-Theme from [](https://github.com/alshedivat/al-folio)
+Theme from [https://github.com/alshedivat/al-folio](https://github.com/alshedivat/al-folio)
 
 ## License
 
